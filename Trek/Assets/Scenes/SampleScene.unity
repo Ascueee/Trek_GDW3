@@ -2388,6 +2388,7 @@ MonoBehaviour:
   sensX: 400
   sensY: 400
   orientation: {fileID: 596784080}
+  camHolder: {fileID: 128642302}
 --- !u!1 &1017959704
 GameObject:
   m_ObjectHideFlags: 0
@@ -3930,6 +3931,7 @@ GameObject:
   - component: {fileID: 1537611985}
   - component: {fileID: 1537611984}
   - component: {fileID: 1537611986}
+  - component: {fileID: 1537611987}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -3993,11 +3995,42 @@ MonoBehaviour:
   crouchSpeed: 4
   crouchYScale: 0.5
   startYScale: 0
-  maxSlopeAngle: 30
+  maxSlopeAngle: 40
+  wallRunSpeed: 8
+  isWallRunning: 0
   playerHeight: 2
   ground:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &1537611987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1537611983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37c37c64eb510ce45aa9151995aabc4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 128
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 64
+  wallRunForce: 80
+  wallJumpUpForce: 7
+  wallJumpSideForce: 20
+  maxWallRunTime: 0.7
+  wallRunTimer: 0
+  wallCheckDistance: 0.7
+  minJumpHeight: 2
+  exitWallTime: 0.2
+  gravityCounterForce: 0.3
+  orientation: {fileID: 596784080}
+  cam: {fileID: 963194229}
 --- !u!1 &1598158884
 GameObject:
   m_ObjectHideFlags: 0
@@ -4010,7 +4043,7 @@ GameObject:
   - component: {fileID: 1598158888}
   - component: {fileID: 1598158887}
   - component: {fileID: 1598158886}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Block (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4495,7 +4528,7 @@ GameObject:
   - component: {fileID: 1916693475}
   - component: {fileID: 1916693474}
   - component: {fileID: 1916693473}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Block (15)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4718,7 +4751,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2014370190}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 564afdd8adb068140907b17adb576df3, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5

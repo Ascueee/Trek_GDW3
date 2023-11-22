@@ -33,6 +33,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float maxSlopeAngle;
     RaycastHit slopeHit;
 
+    [Header("Wall Running Controller")]
+    [SerializeField] float wallRunSpeed;
+    public bool isWallRunning;
+
 
     [Header("Ground Collision")]
     [SerializeField] float playerHeight;
@@ -49,8 +53,11 @@ public class PlayerMovement : MonoBehaviour
     {
         MyInput();
         GroundCheck();
+        OnWall();
         DragControl();
         SpeedControl();
+
+
     }
 
     private void FixedUpdate()
@@ -177,7 +184,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    //------------GENERAL MOVEMENT METHODS ENDS----------------
+    //-----------GENERAL MOVEMENT METHODS ENDS-----------------
 
     //------------COLLISION METHODS START----------------
 
@@ -203,6 +210,18 @@ public class PlayerMovement : MonoBehaviour
         }
 
         return false;
+    }
+
+    void OnWall()
+    {
+        if (isWallRunning)
+        {
+            moveSpeed = wallRunSpeed;
+        }
+        else if (!isWallRunning)
+        {
+            moveSpeed = resetMoveSpeed;
+        }
     }
 
     Vector3 GetSlopeMoveDirection()

@@ -43,6 +43,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] LayerMask ground;
     bool grounded;
 
+    public bool freeze;
+    public bool activeGrapple;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -91,10 +94,20 @@ public class PlayerMovement : MonoBehaviour
         {
             canCrouch = false;
         }
+
+        if (freeze)
+        {
+            //rb.velocity = Vector3.zero;
+            
+        }
     }
 
     void Movement()
     {
+        if (activeGrapple)
+            return;
+
+
         //calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
@@ -136,7 +149,7 @@ public class PlayerMovement : MonoBehaviour
 
     void DragControl()
     {
-        if (grounded)
+        if (grounded && !activeGrapple)
             rb.drag = groundDrag;
         else
             rb.drag = 0.3f;
@@ -149,6 +162,8 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void SpeedControl()
     {
+        if (activeGrapple)
+            return;
         //limiting speed on slopes
         if (OnSlope() && exitingSlope == false)
         {
@@ -182,6 +197,33 @@ public class PlayerMovement : MonoBehaviour
             transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
             moveSpeed = resetMoveSpeed;
         }
+    }
+
+    private bool enableMovementOnNextTouch;
+    public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
+    {
+        activeGrapple = true;
+
+        velocityToSet = CalculateGrappleMovement(transform.position, targetPosition, trajectoryHeight);
+        Invoke(nameof(SetVelocity), 0.1f);
+    }
+
+    private Vector3 velocityToSet;
+    private void SetVelocity()
+    {
+        enableMovementOnNextTouch = true;
+        rb.velocity = velocityToSet;
+    }
+    public Vector3 CalculateGrappleMovement(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
+    {
+        float gravity = Physics.gravity.y;
+        float displacementY = endPoint.y - startPoint.y;
+        Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z);
+
+        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * trajectoryHeight);
+        Vector3 velocityXZ = displacementXZ  / (Mathf.Sqrt(-2 * trajectoryHeight / gravity) + Mathf.Sqrt(2 * (displacementY - trajectoryHeight) / gravity));
+
+        return velocityXZ + velocityY;
     }
 
     //-----------GENERAL MOVEMENT METHODS ENDS-----------------
@@ -221,6 +263,22 @@ public class PlayerMovement : MonoBehaviour
         else if (!isWallRunning)
         {
             moveSpeed = resetMoveSpeed;
+        }
+    }
+
+    public void ResetRestrictions()
+    {
+        activeGrapple = false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (enableMovementOnNextTouch)
+        {
+            enableMovementOnNextTouch = false;
+            ResetRestrictions();
+
+            GetComponent<Grapple>().StopGrapple();
         }
     }
 

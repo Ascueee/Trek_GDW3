@@ -85,8 +85,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    //LEAN TWEEN METHODS
-
+    //-----------LEAN TWEEN METHODS----------
     void ChangeBackGroundImageAlpha(float a)
     {
         var alphaChange = new Vector4(dialogueTextBox.color.r, dialogueTextBox.color.g, dialogueTextBox.color.b, a);

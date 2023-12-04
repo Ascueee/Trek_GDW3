@@ -6,6 +6,11 @@ TagManager:
   tags:
   - GrapplePickUp
   - PlatformPickUp
+  - Gem
+  - LevelManager
+  - CheckPoint
+  - Death
+  - CheckPointManager
   layers:
   - Default
   - TransparentFX

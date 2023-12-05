@@ -25,14 +25,12 @@ public class PlayerCollisions : MonoBehaviour
         if(other.gameObject.tag == "GrapplePickUp")
         {
             powerUps[0].gameObject.SetActive(true);
-            powerUps[1].gameObject.SetActive(false);
             Destroy(other.gameObject);
         }
 
         if(other.gameObject.tag == "PlatformPickUp")
         {
             powerUps[0].gameObject.SetActive(false);
-            powerUps[1].gameObject.SetActive(true);
             Destroy(other.gameObject);
         }
 

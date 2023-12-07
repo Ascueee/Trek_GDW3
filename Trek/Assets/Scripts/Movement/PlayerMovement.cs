@@ -43,6 +43,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] LayerMask ground;
     bool grounded;
 
+    [Header("Player Sound")]
+    [SerializeField] AudioSource ps;
+    [SerializeField] AudioClip wallClimbSound;
+    bool playWallClimbSound = false;
+
     public bool freeze;
     public bool activeGrapple;
 
@@ -258,10 +263,19 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isWallRunning)
         {
+            if (playWallClimbSound == false)
+            {
+                ps.clip = wallClimbSound;
+                ps.Play();
+                playWallClimbSound = true;
+            }
+
             moveSpeed = wallRunSpeed;
         }
         else if (!isWallRunning)
         {
+            ps.Stop();
+            playWallClimbSound = false;
             moveSpeed = resetMoveSpeed;
         }
     }

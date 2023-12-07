@@ -27,6 +27,10 @@ public class Grapple : MonoBehaviour
     [Header("Input")]
     public KeyCode grappleKey = KeyCode.Mouse0;
 
+    [Header("Grapple Sounds")]
+    [SerializeField] AudioSource gs;
+    [SerializeField] AudioClip grappleShootSound, grappleHitSound;
+
     private bool grappling;
 
     private void Start()
@@ -38,7 +42,11 @@ public class Grapple : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(grappleKey))
+        {
             StartGrapple();
+
+        }
+            
 
         if (grapplingCoolDownTimer > 0)
             grapplingCoolDownTimer -= Time.deltaTime;
@@ -52,6 +60,9 @@ public class Grapple : MonoBehaviour
 
     void StartGrapple()
     {
+        gs.clip = grappleShootSound;
+        gs.Play();
+
         if (grapplingCoolDownTimer > 0)
             return;
 

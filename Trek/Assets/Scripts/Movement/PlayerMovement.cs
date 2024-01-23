@@ -51,11 +51,18 @@ public class PlayerMovement : MonoBehaviour
     public bool freeze;
     public bool activeGrapple;
 
+    public GameObject footstep;
+    public GameObject jumpSound;
+    public GameObject crouchSound;
+    public GameObject GrappleSound;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         startYScale = transform.localScale.y;
         resetMoveSpeed = moveSpeed;
+        footstep.SetActive(false);
+        jumpSound.SetActive(false);
+        crouchSound.SetActive(false);
     }
     private void Update()
     {
@@ -65,7 +72,41 @@ public class PlayerMovement : MonoBehaviour
         DragControl();
         SpeedControl();
 
+        if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) && grounded == true)
+        {
+            footsteps();
+        }
+        else
+        {
+            Stopfootsteps();
+        }
 
+        if (Input.GetKey(KeyCode.Space))
+        {
+            JumpSound();
+        }
+        else
+        {
+            StopJumpSound();
+        }
+
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            crouchSounds();
+        }
+        else
+        {
+            StopCrouchSound();
+        }
+
+        if(Input.GetKey(KeyCode.Mouse0))
+        {
+            GrappleSounds();
+        }
+        else
+        {
+            StopGrappleSounds();
+        }
     }
 
     private void FixedUpdate()
@@ -107,6 +148,45 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+   void footsteps()
+    {
+        footstep.SetActive(true);
+    }
+
+    void Stopfootsteps()
+    {
+        footstep.SetActive(false);
+    }
+
+    void JumpSound()
+    {
+        jumpSound.SetActive(true);
+    }
+
+    void StopJumpSound()
+    {
+        jumpSound.SetActive(false);
+    }
+
+    void crouchSounds()
+    {
+        crouchSound.SetActive(true);
+    }
+
+    void StopCrouchSound()
+    {
+        crouchSound.SetActive(false);
+    }
+
+   void GrappleSounds()
+    {
+        GrappleSound.SetActive(true);
+    }
+
+    void StopGrappleSounds()
+    {
+        GrappleSound.SetActive(false);
+    }
     void Movement()
     {
         if (activeGrapple)
